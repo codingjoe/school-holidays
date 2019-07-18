@@ -1,0 +1,27 @@
+language: python
+dist: xenial
+python:
+- "3.6"
+- "3.7"
+install: pip install tox-travis codecov
+script: tox
+after_success: codecov
+
+jobs:
+  include:
+  - python: "3.7"
+    env: TOXENV=docs
+  - stage: deploy
+    if: tag IS present
+    python: "3.7"
+    install: skip
+    script: skip
+    after_success: skip
+    deploy:
+      provider: pypi
+      user: codingjoe
+      distributions: sdist bdist_wheel
+      on:
+        tags: true
+      password:
+            secure: "xOCsrlmttay6/BpUo7jeR8vmRLuWLu+kjf8HMz+u4+OndBG1TOOzfnwITY1wyLJTYPnqq7vJ01V93iOaIuXgpJ2OlyBll7Yifxq1aouSo7sr/ZuaY5rgQPyPssnYG0NKu/16FvsGOmPqgMGbdL6RjJxKlRPckxA4tZsF6pskQHwuEqrJg6TD4xmMOSBkV4SboVi2iRqzC3mS7Cs70N1+IPUA3pfh/eOpyzhdx9MrDzpE29wj9IeTYJGqBwfZRncYuEsje+jnipT830JanyiNF2PIw131AxGF9aEADQpLbPvFDWzInaxumt7XVQB8e8Zm1CkinVL7/VKqLA/mcBKPdZTTOFURNi5RHanldCT+6CVYjZG5gDZ01Xix4kspPzm4z4m9PiHEtlI81dCQSx5HJ7CZW2yKIv2Bbfed1Hx6Sm8Y951aWu7NzE3EtHoAa+cyKFGuWolLQGD7X3CPDkgek2Xh8eieEMd2OTfzIMz9U4ZGJVYSZEzANxPqPRSNB3nIjbTSijwW+fBfczVQCEOR/uUqjpWtyhuaf9QYNhdAA3UFnYFuKUBwwvyatUm3FDLbOfm0nJ4jehXLvfuUSi4uG6N2X5eWMvr2aaH3HIxzZQctq9VbVBnGO6DNG5kifEixMHGheOGLHAXm9k+OkubyyD5QIVLOgejNhZl/y9xkzm8="
